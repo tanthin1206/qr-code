@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -477,16 +477,23 @@
 
 <body>
   <header>
-    <div class="hdr-icon">📦</div>
+    <div class="hdr-icon" id="hdr-icon">📦</div>
     <div>
-      <div class="hdr-title">Hình Hộp Chữ Nhật</div>
-      <div class="hdr-sub">Công cụ học tập · Toán lớp 5</div>
+      <div class="hdr-title" id="main-title">Hình Hộp Chữ Nhật</div>
+      <div class="hdr-sub">Công cụ học tập · Toán tiểu học</div>
     </div>
     <div class="state-pill" id="state-pill">📐 Hình Khai Triển</div>
   </header>
   <div class="main">
     <aside class="sidebar">
       <div class="section">
+        <div class="sec-title"><span class="sec-dot"></span>Loại Hình</div>
+        <div class="theme-row">
+          <button class="theme-btn active" id="type-box" onclick="setShape('box')">📦 Hộp</button>
+          <button class="theme-btn" id="type-cyl" onclick="setShape('cyl')">🛢️ Trụ</button>
+        </div>
+      </div>
+      <div class="section" id="box-dims">
         <div class="sec-title"><span class="sec-dot"></span>Kích Thước</div>
         <div class="dim-row">
           <div class="dim-top">
@@ -505,6 +512,21 @@
             <div class="dim-label"><span class="dim-badge dh">C</span>Chiều Cao</div><span class="dim-val vh"
               id="vh">3</span>
           </div><input type="range" class="sh" min="1" max="10" value="3" id="sh" oninput="onDim()">
+        </div>
+      </div>
+      <div class="section" id="cyl-dims" style="display:none">
+        <div class="sec-title"><span class="sec-dot"></span>Kích Thước</div>
+        <div class="dim-row">
+          <div class="dim-top">
+            <div class="dim-label"><span class="dim-badge dl">R</span>Bán Kính</div><span class="dim-val vl"
+              id="vcr">2</span>
+          </div><input type="range" class="sl" min="1" max="5" step="0.1" value="2" id="scr" oninput="onDim()">
+        </div>
+        <div class="dim-row">
+          <div class="dim-top">
+            <div class="dim-label"><span class="dim-badge dh">C</span>Chiều Cao</div><span class="dim-val vh"
+              id="vch">5</span>
+          </div><input type="range" class="sh" min="1" max="10" value="5" id="sch" oninput="onDim()">
         </div>
       </div>
       <div class="section">
@@ -526,22 +548,26 @@
         <div class="info-card">
           <div class="info-card-title"><span class="ic-dot"></span>Thể Tích</div>
           <div class="formula-box">
-            <div class="formula-eq">V = <span class="fn fnl" id="fnl">6</span><span class="fn-op">×</span><span
-                class="fn fnw" id="fnw">3</span><span class="fn-op">×</span><span class="fn fnh" id="fnh">3</span></div>
+            <div class="formula-eq" id="formula-box-prism">V = <span class="fn fnl" id="fnl">6</span><span
+                class="fn-op">×</span><span class="fn fnw" id="fnw">3</span><span class="fn-op">×</span><span
+                class="fn fnh" id="fnh">3</span></div>
+            <div class="formula-eq" id="formula-box-cyl" style="display:none">V = <span class="fn-op">π ×</span> <span
+                class="fn fnl" id="fcr-f">2</span>² <span class="fn-op">×</span> <span class="fn fnh"
+                id="fch-f">5</span></div>
             <div class="formula-result" id="fres">54</div>
             <div class="formula-unit">cm³</div>
           </div>
         </div>
         <div class="info-card">
-          <div class="info-card-title"><span class="ic-dot"></span>Tính Chất</div>
+          <div class="info-card-title"><span class="ic-dot"></span>Kết Quả</div>
           <div class="stats-grid">
-            <div class="stat">
-              <div class="stat-val">6</div>
-              <div class="stat-lbl">Mặt</div>
+            <div class="stat" id="stat-f1">
+              <div class="stat-val" id="s-f1">6</div>
+              <div class="stat-lbl" id="s-l1">Mặt</div>
             </div>
-            <div class="stat">
-              <div class="stat-val">12</div>
-              <div class="stat-lbl">Cạnh</div>
+            <div class="stat" id="stat-f2">
+              <div class="stat-val" id="s-f2">12</div>
+              <div class="stat-lbl" id="s-l2">Cạnh</div>
             </div>
             <div class="stat">
               <div class="stat-val" id="sarea">126</div>
@@ -549,16 +575,20 @@
             </div>
             <div class="stat">
               <div class="stat-val" id="svol">54</div>
-              <div class="stat-lbl">Khối đơn vị</div>
+              <div class="stat-lbl">Thể tích cm³</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="hint"><b>Kéo</b> để xoay · <b>Cuộn</b> để zoom<br>Nhấn <b>Lắp Ghép</b> để gấp hộp</div>
-      <div class="dim-overlay">
+      <div class="hint"><b>Kéo</b> để xoay · <b>Cuộn</b> để zoom<br>Nhấn <b>Lắp Ghép</b> để gấp hình</div>
+      <div class="dim-overlay" id="dim-overlay-box">
         <span class="dim-chip">↔ Dài: <b id="lbl-l">6</b> cm</span>
         <span class="dim-chip">↕ Rộng: <b id="lbl-w">3</b> cm</span>
         <span class="dim-chip">↑ Cao: <b id="lbl-h">3</b> cm</span>
+      </div>
+      <div class="dim-overlay" id="dim-overlay-cyl" style="display:none">
+        <span class="dim-chip">⭕ Bán Kính: <b id="lbl-cr">2</b> cm</span>
+        <span class="dim-chip">↕ Cao: <b id="lbl-ch">5</b> cm</span>
       </div>
     </div>
   </div>
@@ -566,6 +596,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     var L = 6, W = 3, H = 3;
+    var RADIUS = 2, CYL_H = 5;
+    var shapeType = 'box'; // 'box' or 'cyl'
     var scene, camera, renderer, group;
     var target;
     var dragging = false, prevX = 0, prevY = 0;
@@ -604,9 +636,43 @@
       ['top', 0.68, 0.92]
     ];
 
+    function setShape(type) {
+      if (animating) return;
+      shapeType = type;
+      document.getElementById('type-box').classList.toggle('active', type === 'box');
+      document.getElementById('type-cyl').classList.toggle('active', type === 'cyl');
+      document.getElementById('box-dims').style.display = type === 'box' ? 'block' : 'none';
+      document.getElementById('cyl-dims').style.display = 'none';
+      document.getElementById('dim-overlay-box').style.display = type === 'box' ? 'flex' : 'none';
+      document.getElementById('dim-overlay-cyl').style.display = type === 'cyl' ? 'flex' : 'none';
+      document.querySelector('.info-panel').style.display = type === 'box' ? 'flex' : 'none';
+
+      var title = type === 'box' ? 'Hình Hộp Chữ Nhật' : 'Hình Trụ Tròn';
+      document.getElementById('main-title').textContent = title;
+      document.getElementById('hdr-icon').textContent = type === 'box' ? '📦' : '🛢️';
+
+      // Update Info Panel Headings
+      if (type === 'cyl') {
+        document.getElementById('s-l1').textContent = 'Đáy';
+        document.getElementById('s-f1').textContent = '2';
+        document.getElementById('s-l2').textContent = 'Mặt bên';
+        document.getElementById('s-f2').textContent = '1';
+        document.getElementById('formula-box-prism').style.display = 'none';
+        document.getElementById('formula-box-cyl').style.display = 'flex';
+      } else {
+        document.getElementById('s-l1').textContent = 'Mặt';
+        document.getElementById('s-f1').textContent = '6';
+        document.getElementById('s-l2').textContent = 'Cạnh';
+        document.getElementById('s-f2').textContent = '12';
+        document.getElementById('formula-box-prism').style.display = 'flex';
+        document.getElementById('formula-box-cyl').style.display = 'none';
+      }
+
+      onDim();
+    }
+
     function init() {
-      // Net center in X: net spans from -(L/2+G+H) to (L/2+G+H+G+L) → center ≈ G+L/2
-      target = new THREE.Vector3(0.12 + L / 2, 0, 0);
+      target = new THREE.Vector3(0, 0, 0);
       var wrap = document.querySelector('.canvas-wrap');
       var cw = wrap.clientWidth, ch = wrap.clientHeight;
       scene = new THREE.Scene();
@@ -621,8 +687,9 @@
       scene.add(new THREE.DirectionalLight(0x00d4aa, 0.15)).position.set(0, -8, 8);
 
       group = new THREE.Group(); scene.add(group);
-      setTheme('white'); // Khởi tạo theme mặc định
+      setTheme('white');
       setupInput(); loop();
+      onDim();
     }
 
     function setTheme(t) {
@@ -649,7 +716,8 @@
     // edgeMask: mảng 4 phần tử [bottom, right, top, left] — true = viền đậm, false = viền trong (nối với mặt khác)
     function makeFace(color, fw, fh, edgeMask) {
       if (!edgeMask) edgeMask = [true, true, true, true]; // mặc định tất cả viền đậm
-      var geo = new THREE.PlaneGeometry(fw, fh);
+      var segX = shapeType === 'cyl' ? Math.max(64, Math.round(fw * 10)) : 1;
+      var geo = new THREE.PlaneGeometry(fw, fh, segX, 1);
       var mat = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.88, shininess: 50 });
       var mesh = new THREE.Mesh(geo, mat);
 
@@ -658,24 +726,20 @@
 
       // ── Lưới bên trong (mỏng) ──
       var gridPts = [];
-      // Lưới dọc bên trong
-      for (var i = 1; i < cols; i++) {
-        var x = -hw + i * (fw / cols);
-        gridPts.push(new THREE.Vector3(x, -hh, 0), new THREE.Vector3(x, hh, 0));
+      if (shapeType === 'box') {
+        for (var i = 1; i < cols; i++) {
+          var x = -hw + i * (fw / cols);
+          gridPts.push(new THREE.Vector3(x, -hh, 0), new THREE.Vector3(x, hh, 0));
+        }
+        for (var j = 1; j < rows; j++) {
+          var y = -hh + j * (fh / rows);
+          gridPts.push(new THREE.Vector3(-hw, y, 0), new THREE.Vector3(hw, y, 0));
+        }
       }
-      // Lưới ngang bên trong
-      for (var j = 1; j < rows; j++) {
-        var y = -hh + j * (fh / rows);
-        gridPts.push(new THREE.Vector3(-hw, y, 0), new THREE.Vector3(hw, y, 0));
-      }
-      // Các cạnh KHÔNG đậm (nối giữa các mặt) cũng dùng style lưới mỏng
-      // bottom edge
+
       if (!edgeMask[0]) gridPts.push(new THREE.Vector3(-hw, -hh, 0), new THREE.Vector3(hw, -hh, 0));
-      // right edge
       if (!edgeMask[1]) gridPts.push(new THREE.Vector3(hw, -hh, 0), new THREE.Vector3(hw, hh, 0));
-      // top edge
       if (!edgeMask[2]) gridPts.push(new THREE.Vector3(hw, hh, 0), new THREE.Vector3(-hw, hh, 0));
-      // left edge
       if (!edgeMask[3]) gridPts.push(new THREE.Vector3(-hw, hh, 0), new THREE.Vector3(-hw, -hh, 0));
 
       if (gridPts.length > 0) {
@@ -691,13 +755,9 @@
 
       // ── Viền ngoài đậm ──
       var boldPts = [];
-      // bottom edge (y = -hh)
       if (edgeMask[0]) boldPts.push(new THREE.Vector3(-hw, -hh, 0), new THREE.Vector3(hw, -hh, 0));
-      // right edge (x = hw)
       if (edgeMask[1]) boldPts.push(new THREE.Vector3(hw, -hh, 0), new THREE.Vector3(hw, hh, 0));
-      // top edge (y = hh)
       if (edgeMask[2]) boldPts.push(new THREE.Vector3(hw, hh, 0), new THREE.Vector3(-hw, hh, 0));
-      // left edge (x = -hw)
       if (edgeMask[3]) boldPts.push(new THREE.Vector3(-hw, hh, 0), new THREE.Vector3(-hw, -hh, 0));
 
       if (boldPts.length > 0) {
@@ -714,60 +774,85 @@
       return mesh;
     }
 
-    // ═══════ BUILD NET ═══════
-    // Layout bậc thang (giống sách giáo khoa):
-    //        ┌────┐
-    //        │ top│  (L×W, trên front)
-    //  ┌───┬─┼────┼──┬──────┐
-    //  │lft│ │frnt│  │ back │  (dải ngang: W×H, L×H, W×H, L×H)
-    //  └───┴─┼────┼──┼──────┤
-    //             │rgt│btm  │  (L×W, dưới back)
-    //             └───┴─────┘
-    // edgeMask: [bottom, right, top, left] — true = viền đậm bao ngoài
+    function makeCircle(color, r) {
+      var geo = new THREE.CircleGeometry(r, 64);
+      var mat = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.88 });
+      var mesh = new THREE.Mesh(geo, mat);
+
+      // Grid & Border
+      var ringGeo = new THREE.RingGeometry(r - 0.04, r, 64);
+      var ringMat = new THREE.MeshBasicMaterial({ color: BOLD_EDGE_COLOR, side: THREE.DoubleSide });
+      var ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.z = 0.01;
+      mesh.add(ring);
+      var ring2 = ring.clone(); ring2.position.z = -0.01;
+      mesh.add(ring2);
+
+      return mesh;
+    }
+
     function buildNet() {
       while (group.children.length) group.remove(group.children[0]);
       faces = [];
-      var G = 0.12, HPI = Math.PI / 2;
+      if (shapeType === 'cyl') {
+        buildCylNet();
+      } else {
+        buildBoxNet();
+      }
+    }
 
-      // Front (L×W): nối left(trái), right(phải), top(trên) → 3 cạnh mỏng, cạnh dưới đậm
-      // edgeMask [bottom, right, top, left]
+    function buildBoxNet() {
+      var G = 0.12, HPI = Math.PI / 2;
       var front = makeFace(COLORS[0], L, W, [true, false, false, false]);
       front.rotation.x = -HPI; front.position.set(0, 0.001, 0);
       group.add(front); faces.push({ mesh: front, type: 'front' });
 
-      // Left (H×W): cạnh phải nối front → mỏng, 3 cạnh còn lại đậm
       var left = makeFace(COLORS[2], H, W, [true, false, true, true]);
       left.rotation.x = -HPI; left.position.set(-(L / 2 + G + H / 2), 0.001, 0);
       group.add(left);
       faces.push({ mesh: left, type: 'left', pivotPos: new THREE.Vector3(-L / 2, 0, 0), pivotAxis: new THREE.Vector3(0, 0, -1), foldAngle: HPI, flatOffset: new THREE.Vector3(-(G + H / 2), 0.001, 0), tStart: SCHEDULE[0][1], tEnd: SCHEDULE[0][2] });
 
-      // Right (H×W): cạnh trái nối front → mỏng, cạnh phải nối back → mỏng
       var right = makeFace(COLORS[3], H, W, [true, false, true, false]);
       right.rotation.x = -HPI; right.position.set(L / 2 + G + H / 2, 0.001, 0);
       group.add(right);
       faces.push({ mesh: right, type: 'right', pivotPos: new THREE.Vector3(L / 2, 0, 0), pivotAxis: new THREE.Vector3(0, 0, 1), foldAngle: HPI, flatOffset: new THREE.Vector3(G + H / 2, 0.001, 0), tStart: SCHEDULE[1][1], tEnd: SCHEDULE[1][2] });
 
-      // Back (L×W): cạnh trái nối right → mỏng, cạnh dưới nối bottom → mỏng
-      // edgeMask [bottom, right, top, left]
       var back = makeFace(COLORS[1], L, W, [false, true, true, false]);
       back.rotation.x = -HPI; back.position.set(L / 2 + G + H + G + L / 2, 0.001, 0);
       group.add(back);
       faces.push({ mesh: back, type: 'back', tStart: SCHEDULE[2][1], tEnd: SCHEDULE[2][2] });
 
-      // Top (L×H): cạnh dưới nối front top → mỏng
       var top2 = makeFace(COLORS[4], L, H, [false, true, true, true]);
       top2.rotation.x = -HPI; top2.position.set(0, 0.001, -(W / 2 + G + H / 2));
       group.add(top2);
       faces.push({ mesh: top2, type: 'top', pivotPos: new THREE.Vector3(0, 0, -W / 2), pivotAxis: new THREE.Vector3(1, 0, 0), foldAngle: HPI, flatOffset: new THREE.Vector3(0, 0.001, -(G + H / 2)), tStart: SCHEDULE[4][1], tEnd: SCHEDULE[4][2] });
 
-      // Bottom (L×H): dưới back — nối back bottom → mỏng
       var backCenterX = L / 2 + G + H + G + L / 2;
       var bottom = makeFace(COLORS[5], L, H, [true, true, false, true]);
       bottom.rotation.x = -HPI; bottom.position.set(backCenterX, 0.001, W / 2 + G + H / 2);
       group.add(bottom);
       faces.push({ mesh: bottom, type: 'bottom', tStart: SCHEDULE[3][1], tEnd: SCHEDULE[3][2] });
-      // Căn giữa tương đối
-      group.position.x = 0;
+      group.position.set(0, 0, 0);
+    }
+
+    function buildCylNet() {
+      var Circum = 2 * Math.PI * RADIUS;
+      var side = makeFace(COLORS[2], Circum, CYL_H, [true, true, true, true]);
+      side.rotation.x = -Math.PI / 2;
+      group.add(side);
+      faces.push({ mesh: side, type: 'side', origGeo: side.geometry.clone() });
+
+      var topC = makeCircle(COLORS[0], RADIUS);
+      topC.rotation.x = -Math.PI / 2;
+      topC.position.set(0, 0.001, -(CYL_H / 2 + RADIUS));
+      group.add(topC);
+      faces.push({ mesh: topC, type: 'topC' });
+
+      var btmC = makeCircle(COLORS[0], RADIUS);
+      btmC.rotation.x = -Math.PI / 2;
+      btmC.position.set(0, 0.001, (CYL_H / 2 + RADIUS));
+      group.add(btmC);
+      faces.push({ mesh: btmC, type: 'btmC' });
     }
 
     // ═══════ FOLD ═══════
@@ -778,8 +863,72 @@
     var _flatQ = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0));
 
     function applyFold(gT) {
+      if (shapeType === 'cyl') {
+        applyCylFold(gT);
+      } else {
+        applyBoxFold(gT);
+      }
+    }
+    function applyCylFold(gT) {
+      var side = faces.find(f => f.type === 'side');
+      var topC = faces.find(f => f.type === 'topC');
+      var btmC = faces.find(f => f.type === 'btmC');
+      var sideT = easeIO(localT(gT, 0.0, 0.65));
+      var standT = easeIO(localT(gT, 0.78, 1.0));
+
+      // Keep net flat at start, then stand cylinder up near the end.
+      group.rotation.set(-Math.PI / 2 * standT, 0, 0);
+
+      // Rolling side
+      if (side) {
+        var posAttr = side.mesh.geometry.attributes.position;
+        var origAttr = side.origGeo.attributes.position;
+        var circum = 2 * Math.PI * RADIUS;
+
+        for (var i = 0; i < posAttr.count; i++) {
+          var x = origAttr.getX(i);
+          var y = origAttr.getY(i);
+          if (sideT < 0.001) {
+            posAttr.setXYZ(i, x, y, 0);
+          } else {
+            var angle = (x / circum) * Math.PI * 2;
+            var cx = RADIUS * Math.sin(angle);
+            var cz = RADIUS * Math.cos(angle);
+            var nx = x + (cx - x) * sideT;
+            var nz = -cz * sideT;
+            posAttr.setXYZ(i, nx, y, nz);
+          }
+        }
+        posAttr.needsUpdate = true;
+        side.mesh.geometry.computeVertexNormals();
+        side.mesh.position.y = 0.001 + RADIUS * sideT;
+
+        // Hide outlines/grid while folding for side
+        side.mesh.children.forEach(c => {
+          c.visible = (sideT < 0.01);
+        });
+      }
+
+      // Fold both caps with a hinge arc to avoid the "pushed in" look.
+      var topT = sideT;
+      var btmT = sideT;
+      var topAng = (Math.PI / 2) * topT;
+      var btmAng = (Math.PI / 2) * btmT;
+      if (topC) {
+        topC.mesh.position.z = -CYL_H / 2 - RADIUS * Math.cos(topAng);
+        topC.mesh.position.y = 0.001 + RADIUS * Math.sin(topAng);
+        topC.mesh.rotation.x = -Math.PI / 2 + topAng;
+      }
+      if (btmC) {
+        btmC.mesh.position.z = CYL_H / 2 + RADIUS * Math.cos(btmAng);
+        btmC.mesh.position.y = 0.001 + RADIUS * Math.sin(btmAng);
+        btmC.mesh.rotation.x = -Math.PI / 2 - btmAng;
+      }
+    }
+
+    function applyBoxFold(gT) {
       var G = 0.12, HPI = Math.PI / 2;
-      // Simple folds: left, right, top (not back, not bottom — they are compound)
+      group.rotation.set(0, 0, 0);
       for (var i = 0; i < faces.length; i++) {
         var f = faces[i];
         if (f.type === 'front' || f.type === 'back' || f.type === 'bottom') continue;
@@ -796,7 +945,6 @@
         f.mesh.quaternion.copy(_q).multiply(_flatQ);
       }
 
-      // Back face (compound with Right)
       var bF = null, rF = null, btmF = null;
       for (var k = 0; k < faces.length; k++) {
         if (faces[k].type === 'back') bF = faces[k];
@@ -821,20 +969,15 @@
         bF.mesh.position.copy(backCenter);
         bF.mesh.quaternion.copy(bQ).multiply(rQ).multiply(_flatQ);
 
-        // Bottom face (compound with Back, which is compound with Right)
         if (btmF) {
           var btmT = easeIO(localT(gT, btmF.tStart, btmF.tEnd));
           var btmAngle = HPI * btmT;
-          // Back's bottom edge (z=+H/2 in flat world) — offset from back center
           var backBottomFromCenter = new THREE.Vector3(0, 0, W / 2);
-          // Transform through right fold, then back fold
           var backBottomInR = backBottomFromCenter.clone().applyQuaternion(rQ);
           var backBottomEdge = backBottomInR.clone().applyQuaternion(bQ).add(backCenter);
-          // Bottom fold axis: (-1,0,0) flat → transform through right + back
           var btmAxisFlat = new THREE.Vector3(-1, 0, 0);
           var btmAxisWorld = btmAxisFlat.clone().applyQuaternion(rQ).applyQuaternion(bQ);
           var btmQ = new THREE.Quaternion().setFromAxisAngle(btmAxisWorld, btmAngle);
-          // Bottom offset from back's bottom edge
           var btmOffset = new THREE.Vector3().lerpVectors(
             new THREE.Vector3(0, 0.001, G + H / 2),
             new THREE.Vector3(0, 0, H / 2), btmT
@@ -861,28 +1004,33 @@
           btn.disabled = false;
           if (isFolded) {
             btn.textContent = '↩ Khai Triển'; btn.classList.add('unfolding');
-            document.getElementById('state-pill').textContent = '📦 Hình Hộp';
+            document.getElementById('state-pill').textContent = shapeType === 'box' ? '📦 Hình Hộp' : '🛢️ Hình Trụ';
             document.getElementById('state-pill').classList.add('folded');
-            // Gấp xong: dịch hộp về giữa canvas (bù panel phải)
-            var infoW = 220;
+            var infoW = shapeType === 'box' ? 220 : 0;
             var cvW = document.querySelector('.canvas-wrap').clientWidth;
             var shiftRatio = infoW / cvW;
-            var dist = Math.max(L, W, H) * 2.5 + 6;
+            var size = shapeType === 'box' ? Math.max(L, W, H) : Math.max(RADIUS * 2, CYL_H);
+            var dist = size * 2.5 + 6;
             var viewW = 2 * Math.tan((42 / 2) * Math.PI / 180) * dist;
             var shiftX = -(shiftRatio * viewW * 0.5);
             group.position.set(shiftX, 0, 0);
-            smoothCam(Math.PI + 0.65, 0.45, dist, new THREE.Vector3(shiftX, H / 2, 0));
+            var camH = shapeType === 'box' ? H / 2 : 0;
+            if (shapeType === 'box') {
+              smoothCam(Math.PI + 0.65, 0.45, dist, new THREE.Vector3(shiftX, camH, 0));
+            } else {
+              smoothCam(Math.PI, 0.40, dist, new THREE.Vector3(shiftX, 0, 0));
+            }
           } else {
             btn.textContent = '▶ Lắp Ghép'; btn.classList.remove('unfolding');
             document.getElementById('state-pill').textContent = '📐 Hình Khai Triển';
             document.getElementById('state-pill').classList.remove('folded');
-            // Mở xong: trở về vị trí net
             group.position.set(0, 0, 0);
-            smoothCam(Math.PI, 1.45, 28, new THREE.Vector3(0.12 + L / 2, 0, 0));
+            var netTarget = shapeType === 'box' ? new THREE.Vector3(0.12 + L / 2, 0, 0) : new THREE.Vector3(0, 0, 0);
+            smoothCam(Math.PI, 1.45, 28, netTarget);
           }
         }
       }
-      if (isFolded && !dragging && !animating) camTheta += 0.003;
+      if (isFolded && !dragging && !animating && shapeType === 'box') camTheta += 0.003;
       posCam();
       renderer.render(scene, camera);
     }
@@ -939,34 +1087,62 @@
     }
 
     function onDim() {
-      L = +document.getElementById('sl').value;
-      W = +document.getElementById('sw').value;
-      H = +document.getElementById('sh').value;
-      document.getElementById('vl').textContent = L;
-      document.getElementById('vw').textContent = W;
-      document.getElementById('vh').textContent = H;
-      document.getElementById('fnl').textContent = L;
-      document.getElementById('fnw').textContent = W;
-      document.getElementById('fnh').textContent = H;
-      document.getElementById('lbl-l').textContent = L;
-      document.getElementById('lbl-w').textContent = W;
-      document.getElementById('lbl-h').textContent = H;
-      document.getElementById('fres').textContent = L * W * H;
-      document.getElementById('sarea').textContent = 2 * (L * W + W * H + L * H);
-      document.getElementById('svol').textContent = L * W * H;
+      if (shapeType === 'cyl') {
+        RADIUS = +document.getElementById('scr').value;
+        CYL_H = +document.getElementById('sch').value;
+        document.getElementById('vcr').textContent = RADIUS;
+        document.getElementById('vch').textContent = CYL_H;
+        document.getElementById('lbl-cr').textContent = RADIUS;
+        document.getElementById('lbl-ch').textContent = CYL_H;
+
+        var sBase = Math.PI * RADIUS * RADIUS;
+        var sSide = 2 * Math.PI * RADIUS * CYL_H;
+        var volume = sBase * CYL_H;
+
+        document.getElementById('fres').textContent = volume.toFixed(1);
+        document.getElementById('sarea').textContent = (2 * sBase + sSide).toFixed(1);
+        document.getElementById('svol').textContent = volume.toFixed(1);
+
+        document.getElementById('fcr-f').textContent = RADIUS;
+        document.getElementById('fch-f').textContent = CYL_H;
+      } else {
+        L = +document.getElementById('sl').value;
+        W = +document.getElementById('sw').value;
+        H = +document.getElementById('sh').value;
+        document.getElementById('vl').textContent = L;
+        document.getElementById('vw').textContent = W;
+        document.getElementById('vh').textContent = H;
+        document.getElementById('fnl').textContent = L;
+        document.getElementById('fnw').textContent = W;
+        document.getElementById('fnh').textContent = H;
+        document.getElementById('lbl-l').textContent = L;
+        document.getElementById('lbl-w').textContent = W;
+        document.getElementById('lbl-h').textContent = H;
+        document.getElementById('fres').textContent = L * W * H;
+        document.getElementById('sarea').textContent = 2 * (L * W + W * H + L * H);
+        document.getElementById('svol').textContent = L * W * H;
+      }
+
       isFolded = false; animating = false;
       var btn = document.getElementById('btn-fold');
       btn.textContent = '▶ Lắp Ghép'; btn.classList.remove('unfolding'); btn.disabled = false;
       document.getElementById('state-pill').textContent = '📐 Hình Khai Triển';
       document.getElementById('state-pill').classList.remove('folded');
-      camTheta = Math.PI; camPhi = 1.45; camDist = 28; target.set(0.12 + L / 2, 0, 0);
+      camTheta = Math.PI; camPhi = 1.45; camDist = 28;
+      var netTarget = shapeType === 'box' ? new THREE.Vector3(0.12 + L / 2, 0, 0) : new THREE.Vector3(0, 0, 0);
+      target.copy(netTarget);
       buildNet(); applyFold(0);
     }
 
     function resetAll() {
-      document.getElementById('sl').value = 6;
-      document.getElementById('sw').value = 3;
-      document.getElementById('sh').value = 3;
+      if (shapeType === 'cyl') {
+        document.getElementById('scr').value = 2;
+        document.getElementById('sch').value = 5;
+      } else {
+        document.getElementById('sl').value = 6;
+        document.getElementById('sw').value = 3;
+        document.getElementById('sh').value = 3;
+      }
       onDim();
     }
 
@@ -975,3 +1151,21 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
